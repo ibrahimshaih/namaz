@@ -278,7 +278,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
 .reset-btn:active{opacity:0.7;}
 
 .dhikr-text{
-  padding:22px 20px 16px;
+  padding:22px 6px 16px;
   font-size:clamp(18px,5vw,24px);
   line-height:1.85;
   color:var(--text);
@@ -322,7 +322,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
   margin:16px 14px;padding:20px;
   background:linear-gradient(135deg,rgba(48,209,88,0.18),rgba(48,209,88,0.06));
   border:1px solid rgba(48,209,88,0.4);
-  border-radius:18px;text-align:center;
+  border-radius:28px;text-align:center;
   animation:fadeIn .5s ease;display:none;
 }
 .complete-banner.show{display:block;}
@@ -331,7 +331,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── SEPARATOR ── */
-.dhikr-sep{height:1px;background:var(--sep);margin:4px 14px;}
+.dhikr-sep{height:1px;background:rgba(255,255,255,0.12);margin:4px 14px;}
 
 /* ── PAGE JUMP PANEL ── */
 #page-jump{
@@ -473,16 +473,18 @@ body.light-theme .nav-btn:active{background:rgba(0,0,0,0.12);}
 
 /* Кольцо — бежевый фон */
 body.light-theme #float-ring{
-  background:rgba(0,0,0,0.55);
+  background:rgba(0,0,0,0.06);
   border-radius:50%;
-  backdrop-filter:blur(4px);
 }
 body.light-theme #float-ring .fr-bg{
-  stroke:rgba(255,255,255,0.12);
+  stroke:#e0e0e0;
 }
 body.light-theme #float-ring .fr-num{
-  color:#fff !important;
+  color:var(--accent) !important;
   text-shadow:none !important;
+}
+body.light-theme #float-ring .fr-total{
+  color:rgba(0,0,0,0.35) !important;
 }
 
 /* Шапка dhikr */
@@ -525,6 +527,7 @@ body.light-theme .dhikr-text{color:rgba(26,18,9,0.95);}
   display:flex;align-items:center;gap:12px;
   border-bottom:1px solid var(--sep);
   flex-shrink:0;
+  direction:ltr;
 }
 .settings-title{font-size:20px;font-weight:700;color:var(--gold);flex:1;text-align:center;direction:rtl;}
 .settings-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 14px 40px;scrollbar-width:none;-ms-overflow-style:none;}
@@ -732,7 +735,7 @@ body.light-theme .note-sheet-body .note-ref{ color:rgba(0,0,0,0.35); }
 
 .dhikr-intro{
   margin:0 16px 14px;
-  padding:12px 16px;
+  padding:8px 14px;
   background:rgba(74,124,89,0.1);
   border-left:3px solid rgba(74,124,89,0.6);
   border-radius:8px;
@@ -749,58 +752,59 @@ body.light-theme .dhikr-intro{
 .ayah-player{
   display:none;
   position:fixed;
-  bottom:0;left:0;right:0;
+  bottom:14px;left:16px;right:16px;
   z-index:800;
-  align-items:center;gap:12px;
-  padding:12px 20px 28px;
-  background:rgba(17,17,17,0.75);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  border-top:1px solid rgba(255,255,255,0.07);
+  align-items:center;gap:14px;
+  padding:8px 14px;
+  background:rgba(30,30,30,0.25);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-radius:28px;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+  direction:ltr;
 }
 .ayah-player.visible{
   display:flex;
 }
 .ayah-player-btn{
-  width:40px;height:40px;border-radius:50%;
-  background:rgba(74,124,89,0.9);
+  width:36px;height:36px;border-radius:50%;
+  background:var(--accent, #4a7c59);
   border:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  font-size:16px;flex-shrink:0;
+  font-size:14px;flex-shrink:0;
   transition:background 0.2s, transform 0.1s;
   color:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,0.3);
 }
 .ayah-player-btn:active{transform:scale(0.93);}
-.ayah-player-btn.playing{background:#4a7c59;}
+.ayah-player-btn.playing{background:var(--accent, #4a7c59);}
 .ayah-player-info{
   flex:1;min-width:0;
 }
 .ayah-player-title{
-  font-size:12px;color:rgba(255,255,255,0.5);
+  font-size:13px;font-weight:500;color:rgba(255,255,255,0.9);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font-family:'Segoe UI',system-ui,sans-serif;
+}
+.ayah-player-time{
+  font-size:12px;color:rgba(255,255,255,0.45);
+  font-family:'Segoe UI',system-ui,sans-serif;
+  margin-top:2px;
 }
 .ayah-player-progress{
   width:100%;height:3px;border-radius:2px;
-  background:rgba(255,255,255,0.1);
-  margin-top:5px;cursor:pointer;
+  background:rgba(255,255,255,0.12);
+  margin-top:6px;cursor:pointer;
   position:relative;
   direction:ltr;
 }
 .ayah-player-progress-fill{
   height:100%;border-radius:2px;
-  background:#4a7c59;width:0%;
+  background:var(--accent, #4a7c59);width:0%;
   transition:width 0.3s linear;
   pointer-events:none;
 }
-.ayah-player-time{
-  font-size:11px;color:rgba(255,255,255,0.35);
-  flex-shrink:0;
-}
-.ayah-player-btn:disabled{
-  opacity:0.6;
-  animation:pulse-load 1s ease-in-out infinite;
-}
-body.light-theme .ayah-player{background:rgba(245,240,232,0.8);border-top:1px solid rgba(0,0,0,0.08);}
 .ayah-player-btn:disabled{
   opacity:0.6;
   animation:pulse-load 1s ease-in-out infinite;
@@ -809,8 +813,32 @@ body.light-theme .ayah-player{background:rgba(245,240,232,0.8);border-top:1px so
   0%,100%{transform:scale(1);}
   50%{transform:scale(0.88);}
 }
-body.light-theme .ayah-player-title{color:rgba(0,0,0,0.45);}
-body.light-theme .ayah-player-time{color:rgba(0,0,0,0.3);}
+body.light-theme .ayah-player{background:rgba(255,255,255,0.25);border:1px solid rgba(0,0,0,0.08);box-shadow:0 8px 32px rgba(0,0,0,0.12);}
+body.light-theme .ayah-player-title{color:rgba(0,0,0,0.8);}
+body.light-theme .ayah-player-time{color:rgba(0,0,0,0.4);}
+
+/* ── THEME TOGGLE BUTTON ── */
+#theme-toggle-btn{
+  position:fixed;
+  top:16px;right:16px;
+  z-index:2000;
+  width:38px;height:38px;
+  border-radius:50%;
+  border:none;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+  color:rgba(255,255,255,0.7);
+  transition:background 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.ayah-player-btn svg{pointer-events:none;}
+#theme-toggle-btn svg{pointer-events:none;}
+#theme-toggle-btn:active{transform:scale(0.88);}
+body.light-theme #theme-toggle-btn{background:rgba(0,0,0,0.07);color:rgba(0,0,0,0.6);}
 </style>
 </head>
 <body>
@@ -1132,11 +1160,16 @@ body.light-theme .ayah-player-time{color:rgba(0,0,0,0.3);}
 
 <!-- DHIKR SCREEN -->
 <div id="dhikr-screen" class="screen">
-  <div class="dhikr-header">
+  <div class="dhikr-header" style="direction:ltr;">
     <div class="btn-back" onclick="goHome()">‹</div>
-    <div class="dhikr-title" id="dhikr-title">أذكار الصباح</div>
-    <div class="progress-pill"><span id="done-count">0</span>/<span id="total-count">0</span></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+      <div class="dhikr-title" id="dhikr-title" style="font-size:14px;">أذكار الصباح</div>
+      <div style="font-size:18px;font-weight:700;color:var(--gold);font-family:'Segoe UI',system-ui,sans-serif;" id="dhikr-subtitle">Утренний</div>
+    </div>
+    <div style="width:38px"></div>
   </div>
+  <span id="done-count" style="display:none">0</span>
+  <span id="total-count" style="display:none">0</span>
   <!-- скрытые элементы для совместимости JS -->
   <span id="fs-val" style="display:none">20</span>
   <div id="trans-toggle" style="display:none"><div class="toggle-thumb"></div></div>
@@ -1589,6 +1622,8 @@ function openDhikr(type) {
   if (resetBtn) resetBtn.style.display = (type === 'evening' || type === 'morning') ? '' : 'none';
   document.getElementById('dhikr-title').textContent =
     type === 'morning' ? 'أذكار الصباح' : type === 'evening' ? 'أذكار المساء' : type === 'iftar' ? 'الإفطار' : 'سجود التلاوة';
+  const sub = document.getElementById('dhikr-subtitle');
+  if (sub) sub.textContent = type === 'morning' ? 'Утренний' : type === 'evening' ? 'Вечерний' : type === 'iftar' ? 'После разговения' : 'Суджуд при чтении';
   document.getElementById('total-count').textContent = data.length;
   updateProgressHeader();
   renderList(data);
@@ -2397,6 +2432,8 @@ const THEMES = {
                   text:'#1a1209', sub:'rgba(26,18,9,0.55)',    ref:'#e2dcd2', refText:'rgba(26,18,9,0.5)',     gold:'#8b6914', light:true  },
 };
 let currentTheme = 'dark';
+window.currentTheme_ref = () => currentTheme;
+window.applyThemeGlobal = (name) => { applyTheme(name); saveSettings(); };
 
 function applyTheme(name) {
   const t = THEMES[name];
@@ -2412,8 +2449,14 @@ function applyTheme(name) {
   r.style.setProperty('--ref',      t.ref);
   r.style.setProperty('--ref-text', t.refText);
   r.style.setProperty('--gold',     t.gold);
-  // Светлая тема — отдельный класс для специфических стилей
   document.body.classList.toggle('light-theme', !!t.light);
+  // Синхронизируем иконку кнопки
+  const toggleBtn = document.getElementById('theme-toggle-btn');
+  if (toggleBtn) {
+    toggleBtn.innerHTML = t.light
+      ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+      : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+  }
   document.querySelectorAll('.theme-swatch').forEach(s => {
     const isActive = s.dataset.theme === name;
     s.classList.toggle('active', isActive);
@@ -2804,6 +2847,16 @@ window.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.card-iftar').onclick   = () => openDhikr('iftar');
   document.querySelector('.card-sujud').onclick   = () => openDhikr('sujud');
   document.querySelector('.home-gear').onclick    = () => showScreen('settings');
+
+  // Кнопка переключения темы
+  const _themeBtn = document.getElementById('theme-toggle-btn');
+  if (_themeBtn) {
+    _themeBtn.addEventListener('click', () => {
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      applyTheme(newTheme);
+      saveSettings();
+    });
+  }
 });
 </script>
 
@@ -2822,7 +2875,7 @@ function showGlobalPlayer(audioUrl, title) {
   if (_ayahAudio && _ayahAudio._url !== audioUrl) {
     _ayahAudio.pause();
     _ayahAudio = null;
-    btn.textContent = '▶'; btn.classList.remove('playing'); btn.disabled = false;
+    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>`; btn.classList.remove('playing'); btn.disabled = false;
     fill.style.width = '0%'; timeEl.textContent = '0:00';
   }
 
@@ -2841,16 +2894,16 @@ function showGlobalPlayer(audioUrl, title) {
       _ayahAudio = new Audio(audioUrl);
       _ayahAudio._url = audioUrl;
 
-      btn.textContent = '⏳'; btn.disabled = true;
+      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></path></svg>`; btn.disabled = true;
       _ayahAudio.oncanplay = () => {
         if (_ayahAudio && _ayahAudio._url === audioUrl) {
           btn.disabled = false;
           _ayahAudio.play();
-          btn.textContent = '⏸'; btn.classList.add('playing');
+          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`; btn.classList.add('playing');
         }
       };
       _ayahAudio.onerror = () => {
-        btn.textContent = '✕'; btn.disabled = false;
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>`; btn.disabled = false;
       };
       _ayahAudio.ontimeupdate = () => {
         if (_ayahAudio && _ayahAudio.duration) {
@@ -2861,7 +2914,7 @@ function showGlobalPlayer(audioUrl, title) {
         }
       };
       _ayahAudio.onended = () => {
-        btn.textContent = '▶'; btn.classList.remove('playing');
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>`; btn.classList.remove('playing');
         fill.style.width = '0%'; timeEl.textContent = '0:00';
       };
       return; // ждём oncanplay
@@ -2870,10 +2923,10 @@ function showGlobalPlayer(audioUrl, title) {
     // Пауза/воспроизведение
     if (_ayahAudio.paused) {
       _ayahAudio.play();
-      btn.textContent = '⏸'; btn.classList.add('playing');
+      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`; btn.classList.add('playing');
     } else {
       _ayahAudio.pause();
-      btn.textContent = '▶'; btn.classList.remove('playing');
+      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>`; btn.classList.remove('playing');
     }
   };
 
@@ -2911,14 +2964,14 @@ function closeNoteSheet(e) {
 
 <!-- Глобальный аудио плеер -->
 <div class="ayah-player" id="global-player">
-  <button class="ayah-player-btn" id="global-player-btn" title="Воспроизвести">▶</button>
+  <button class="ayah-player-btn" id="global-player-btn" title="Воспроизвести"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></button>
   <div class="ayah-player-info">
     <div class="ayah-player-title" id="global-player-title">Абу Бакр аш-Шатри</div>
+    <div class="ayah-player-time" id="global-player-time">0:00</div>
     <div class="ayah-player-progress" id="global-player-progress">
       <div class="ayah-player-progress-fill" id="global-player-fill"></div>
     </div>
   </div>
-  <div class="ayah-player-time" id="global-player-time">0:00</div>
 </div>
 
 <!-- Bottom Sheet сноска -->
@@ -2932,5 +2985,11 @@ function closeNoteSheet(e) {
     <div class="note-sheet-body" id="note-sheet-text"></div>
   </div>
 </div>
+
+<!-- Theme toggle button -->
+<button id="theme-toggle-btn" title="Сменить тему" onclick="
+  var next = (currentTheme === 'day') ? 'dark' : 'day';
+  document.querySelector('.theme-swatch[data-theme='+next+']').click();
+"></button>
 </body>
 </html>
