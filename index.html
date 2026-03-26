@@ -76,11 +76,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
   flex-shrink:0;position:sticky;top:0;z-index:10;
 }
 .btn-back{
-  width:38px;height:38px;border-radius:50%;
+  width:38px;height:38px;min-width:38px;border-radius:50%;
   border:1px solid var(--sep);background:var(--bg3);
   color:var(--text);font-size:18px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   -webkit-tap-highlight-color:transparent;
+  flex-shrink:0;
 }
 .btn-back:active{background:rgba(255,255,255,0.15);}
 .dhikr-title{font-size:20px;font-weight:700;color:var(--gold);letter-spacing:1px;}
@@ -240,42 +241,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
   border-color:rgba(255,255,255,0.2);
 }
 
-/* ── RESET DIALOG ── */
-#reset-dialog{
-  position:fixed;top:0;left:0;right:0;bottom:0;
-  z-index:3000;background:rgba(0,0,0,0.7);
-  display:none;align-items:center;justify-content:center;
-  backdrop-filter:blur(6px);
-}
-#reset-dialog.visible{display:flex;}
-.rd-box{
-  background:var(--bg2);border:1px solid var(--sep);
-  border-radius:20px;padding:28px 24px;
-  text-align:center;width:280px;
-  font-family:'Segoe UI',system-ui,sans-serif;
-}
-.rd-icon{font-size:36px;margin-bottom:12px;}
-.rd-title{font-size:17px;font-weight:600;color:var(--text);margin-bottom:6px;}
-.rd-sub{font-size:13px;color:var(--sub);margin-bottom:22px;}
-.rd-btns{display:flex;gap:10px;}
-.rd-btn{flex:1;padding:12px;border-radius:14px;border:none;
-  font-size:15px;font-weight:600;cursor:pointer;
-  -webkit-tap-highlight-color:transparent;}
-.rd-btn-cancel{background:var(--bg3);color:var(--sub);}
-.rd-btn-confirm{background:var(--accent,#00ff78);color:#000;}
 
-.reset-btn{
-  height:34px;border-radius:17px;
-  padding:0 13px;
-  border:1px solid var(--sep);background:var(--bg3);
-  color:var(--sub);font-size:14px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  -webkit-tap-highlight-color:transparent;
-  transition:background .15s;flex-shrink:0;
-  white-space:nowrap;
-  font-family:'Segoe UI',system-ui,sans-serif;
-}
-.reset-btn:active{opacity:0.7;}
 
 .dhikr-text{
   padding:22px 6px 16px;
@@ -458,7 +424,7 @@ body.light-theme .s-section-title{color:rgba(26,18,9,0.5);}
 body.light-theme .s-row-label{color:rgba(26,18,9,0.85);}
 body.light-theme .s-row-label small{color:rgba(26,18,9,0.45);}
 body.light-theme .pj-btn{color:rgba(26,18,9,0.8);}
-body.light-theme .reset-btn{color:rgba(26,18,9,0.7);border-color:rgba(0,0,0,0.15);}
+
 body.light-theme #dhikr-subtitle{color:rgba(26,18,9,0.45) !important;}
 body.light-theme #page-indicator .pi-sep{color:rgba(0,0,0,0.3) !important;}
 
@@ -981,7 +947,8 @@ body.light-theme #theme-toggle-btn{background:rgba(0,0,0,0.07);color:rgba(0,0,0,
       <div class="s-section-title">Цвет арабских букв</div>
       <div class="s-row" style="flex-direction:column;align-items:flex-start;gap:14px;">
         <div class="color-swatches" id="arabic-color-swatches">
-          <div class="arabic-swatch active" data-acolor="default"  style="background:linear-gradient(135deg,#ffffff,#cccccc);box-shadow:0 0 10px rgba(255,255,255,0.4);"></div>
+          <div class="arabic-swatch active" data-acolor="default"    style="background:linear-gradient(135deg,#ffffff,#cccccc);box-shadow:0 0 10px rgba(255,255,255,0.4);"></div>
+          <div class="arabic-swatch"        data-acolor="warm-white" style="background:linear-gradient(135deg,#ffe8a0,#ffd04d);box-shadow:0 0 10px rgba(255,220,100,0.5);"></div>
           <div class="arabic-swatch" data-acolor="neon-green"  style="background:linear-gradient(135deg,#00ff78,#00cc55);box-shadow:0 0 10px rgba(0,255,120,0.6);"></div>
           <div class="arabic-swatch" data-acolor="neon-blue"   style="background:linear-gradient(135deg,#00cfff,#0070ff);box-shadow:0 0 10px rgba(0,180,255,0.6);"></div>
           <div class="arabic-swatch" data-acolor="neon-purple" style="background:linear-gradient(135deg,#bf5fff,#7c3aed);box-shadow:0 0 10px rgba(160,80,255,0.6);"></div>
@@ -1105,19 +1072,6 @@ body.light-theme #theme-toggle-btn{background:rgba(0,0,0,0.07);color:rgba(0,0,0,
 <!-- SHATTER OVERLAY -->
 <div id="shatter-overlay"></div>
 
-<!-- RESET DIALOG -->
-<div id="reset-dialog">
-  <div class="rd-box" style="direction:ltr;">
-    <div class="rd-icon">↺</div>
-    <div class="rd-title">Начать заново?</div>
-    <div class="rd-sub">Весь прогресс этого раздела будет сброшен</div>
-    <div class="rd-btns">
-      <button class="rd-btn rd-btn-cancel" onclick="closeResetDialog()">Отмена</button>
-      <button class="rd-btn rd-btn-confirm" onclick="doReset()">Сбросить</button>
-    </div>
-  </div>
-</div>
-
 <!-- PAGE JUMP PANEL -->
 <div id="page-jump">
   <div class="pj-title">Выбери страницу</div>
@@ -1141,14 +1095,13 @@ body.light-theme #theme-toggle-btn{background:rgba(0,0,0,0.07);color:rgba(0,0,0,
 
 <!-- DHIKR SCREEN -->
 <div id="dhikr-screen" class="screen">
-  <div class="dhikr-header" style="direction:ltr;">
+  <div class="dhikr-header" style="direction:ltr;position:relative;">
     <div class="btn-back" onclick="goHome()">‹</div>
-    <div style="display:flex;flex-direction:column;align-items:center;gap:0;flex:1;margin-left:115px;">
+    <div style="position:absolute;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:0;pointer-events:none;">
       <span id="dhikr-subtitle" style="font-size:16px;font-style:italic;color:rgba(255,255,255,0.4);font-family:Georgia,serif;font-weight:400;">Утром</span>
       <span id="page-indicator" style="font-family:Georgia,serif;font-size:22px;font-weight:700;letter-spacing:-1px;line-height:1.1;"><span class="pi-cur" style="color:rgba(100,120,160,0.9);">1</span><span class="pi-sep" style="color:rgba(255,255,255,0.2);">/</span><span class="pi-tot" style="color:rgba(160,40,40,0.9);">1</span></span>
     </div>
     <div id="dhikr-title" style="display:none;">أذكار الصباح</div>
-    <button class="reset-btn" onclick="confirmReset()" title="Начать заново" style="font-size:12px;padding:0 10px;height:28px;margin-right:54px;">Начать заново</button>
   </div>
   <button style="display:none" class="reset-btn-placeholder"></button>
   <span id="done-count" style="display:none">0</span>
@@ -1595,9 +1548,6 @@ function openDhikr(type) {
   const data = type === 'morning' ? MORNING : type === 'evening' ? EVENING : type === 'iftar' ? IFTAR : SUJUD;
   counters = {};
   data.forEach(d => { counters[d.id] = 0; });
-  // Кнопка "Начать заново" только для вечернего зикра
-  const resetBtn = document.querySelector('.reset-btn');
-  if (resetBtn) resetBtn.style.display = (type === 'evening' || type === 'morning') ? '' : 'none';
   document.getElementById('dhikr-title').textContent =
     type === 'morning' ? 'أذكار الصباح' : type === 'evening' ? 'أذكار المساء' : type === 'iftar' ? 'الإفطار' : 'سجود التلاوة';
   const sub = document.getElementById('dhikr-subtitle');
@@ -1651,35 +1601,11 @@ function tgAddToHome() {
 function goHome() {
   hideGlobalPlayer();
   hideFloatRing();
-  // Для iftar и sujud — сбрасываем при выходе (у них нет кнопки "Начать заново")
+  // Для iftar и sujud — сбрасываем при выходе
   if (currentType !== 'morning' && currentType !== 'evening') {
     try { sessionStorage.removeItem('lp_' + currentType); } catch(e) {}
   }
   showScreen('home');
-}
-
-function confirmReset() {
-  document.getElementById('reset-dialog').classList.add('visible');
-}
-
-function closeResetDialog() {
-  document.getElementById('reset-dialog').classList.remove('visible');
-}
-
-function doReset() {
-  closeResetDialog();
-  // Запускаем эффект разлёта
-  shatterEffect(() => {
-    const data = currentType === 'morning' ? MORNING : currentType === 'evening' ? EVENING : currentType === 'iftar' ? IFTAR : SUJUD;
-    counters = {};
-    data.forEach(d => { counters[d.id] = 0; });
-    currentPage = 0;
-    renderList(data);
-    setTimeout(() => applyArabicColor(currentArabicColor), 0);
-    syncRingToPage();
-    updateProgressHeader();
-    try { sessionStorage.removeItem('lp_' + currentType); } catch(e) {}
-  });
 }
 
 function shatterEffect(callback) {
@@ -1773,9 +1699,6 @@ function renderList(data) {
     textDiv.className = 'dhikr-text';
     textDiv.textContent = dhikr.text;
     textDiv.style.fontSize = fontSize + 'px';
-    textDiv.style.display = 'flex';
-    textDiv.style.alignItems = 'center';
-    textDiv.style.justifyContent = 'center';
     card.appendChild(textDiv);
 
     // Кнопка сноски (note) — создаём заранее
@@ -2328,6 +2251,8 @@ function activateNext(doneId) {
     }
   } else {
     hideFloatRing();
+    // Все зикры завершены — запускаем эффект пузырьков
+    setTimeout(() => shatterEffect(() => {}), 200);
   }
 }
 
@@ -2498,6 +2423,7 @@ let currentAccent = 'neon-green';
 // Цвета арабского текста
 const ARABIC_COLORS = {
   'default':     { color: null,      label: 'Белый (по умолчанию) ⬜' },
+  'warm-white':  { color: '#ffe8a0', label: 'Тёплый белый 🕯️' },
   'neon-green':  { color: '#00ff78', label: 'Неоновый зелёный 🟢' },
   'neon-blue':   { color: '#00cfff', label: 'Неоновый синий 🔵' },
   'neon-purple': { color: '#bf5fff', label: 'Неоновый фиолетовый 🟣' },
