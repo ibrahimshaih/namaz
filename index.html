@@ -2251,8 +2251,29 @@ function activateNext(doneId) {
     }
   } else {
     hideFloatRing();
-    // Все зикры завершены — запускаем эффект пузырьков
-    setTimeout(() => shatterEffect(() => {}), 200);
+    const data = currentType === 'morning' ? MORNING : currentType === 'evening' ? EVENING : currentType === 'iftar' ? IFTAR : SUJUD;
+    const allDone = data.every(d => (counters[d.id] || 0) >= d.repeat);
+    if (allDone) {
+      // Все зикры завершены — пузырьки
+      setTimeout(() => shatterEffect(() => {}), 200);
+    } else {
+      // Есть незавершённые — найти первый и перейти к нему
+      const unfinishedIdx = data.findIndex(d => (counters[d.id] || 0) < d.repeat);
+      if (unfinishedIdx !== -1 && unfinishedIdx !== currentPage) {
+        setTimeout(() => {
+          const oldEl = document.getElementById(`page-${currentPage}`);
+          const newEl = document.getElementById(`page-${unfinishedIdx}`);
+          if (oldEl && newEl) {
+            animatePage(oldEl, newEl, unfinishedIdx > currentPage ? 1 : -1);
+            currentPage = unfinishedIdx;
+            if (newEl) newEl.scrollTop = 0;
+            updatePageNav();
+            syncRingToPage();
+            saveLastPage();
+          }
+        }, 400);
+      }
+    }
   }
 }
 
