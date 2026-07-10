@@ -2765,6 +2765,13 @@ function changeFont(delta) {
   saveSettings();
 }
 
+// ── SERVICE WORKER (офлайн-доступ + автообновление при наличии сети) ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+
 // ── PWA INSTALL BANNER (как на сайте никах) ──
 let pwaDeferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -2774,11 +2781,15 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 window.addEventListener('appinstalled', () => { pwaHide(); });
 
+let pwaInTelegramMode = false;
+
 function pwaShowIfEligible() {
   const banner = document.getElementById('pwa-banner');
   if (!banner) return;
-  // Внутри Telegram Mini App — не показываем (там своя установка)
-  try { if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) return; } catch(e) {}
+
+  let inTelegram = false;
+  try { inTelegram = !!(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData); } catch(e) {}
+
   // Уже установлено (standalone) — не показываем
   const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
   if (standalone) return;
@@ -2788,11 +2799,25 @@ function pwaShowIfEligible() {
     if (until && Date.now() < until) return;
   } catch(e) {}
 
+  const actions = document.getElementById('pwa-actions');
+  const desc = document.getElementById('pwa-desc');
+
+  if (inTelegram) {
+    // Внутри Telegram — используем нативный метод добавления на главный экран
+    let hasNativeAdd = false;
+    try { hasNativeAdd = typeof window.Telegram.WebApp.addToHomeScreen === 'function'; } catch(e) {}
+    if (!hasNativeAdd) return; // старая версия Telegram — баннер не покажем, есть ручная инструкция в настройках
+    pwaInTelegramMode = true;
+    if (desc) desc.textContent = 'Добавьте «أذكار» на главный экран для быстрого доступа.';
+    if (actions) actions.style.display = 'flex';
+    banner.classList.add('show');
+    return;
+  }
+
+  pwaInTelegramMode = false;
   const ua = window.navigator.userAgent || '';
   const isIos = /iphone|ipad|ipod/i.test(ua);
   const isSafari = /safari/i.test(ua) && !/crios|fxios|edgios/i.test(ua);
-  const actions = document.getElementById('pwa-actions');
-  const desc = document.getElementById('pwa-desc');
 
   if (pwaDeferredPrompt) {
     if (desc) desc.textContent = 'Добавьте «أذكار» на главный экран — быстрый запуск без браузера.';
@@ -2806,6 +2831,11 @@ function pwaShowIfEligible() {
 }
 
 async function pwaInstall() {
+  if (pwaInTelegramMode) {
+    try { window.Telegram.WebApp.addToHomeScreen(); } catch(e) {}
+    pwaHide();
+    return;
+  }
   if (!pwaDeferredPrompt) return;
   pwaDeferredPrompt.prompt();
   try { await pwaDeferredPrompt.userChoice; } catch(e) {}
@@ -2838,7 +2868,6 @@ window.addEventListener('DOMContentLoaded', () => {
     lnk.rel = 'manifest'; lnk.href = URL.createObjectURL(blob);
     document.head.appendChild(lnk);
   } catch(e) {}
-  pwaShowIfEligible();
   initFloatRing();
   initSettings();
   // Telegram Mini App — инициализация + кнопка всегда видима
@@ -2847,6 +2876,7 @@ window.addEventListener('DOMContentLoaded', () => {
       window.Telegram.WebApp.ready();
     }
   } catch(e) {}
+  pwaShowIfEligible();
   // Показываем кнопку всегда
   var addBtn = document.getElementById("tg-add-btn-wrap");
   if (addBtn) addBtn.style.display = "block";
