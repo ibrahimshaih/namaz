@@ -1128,7 +1128,7 @@ body.light-theme #theme-toggle-btn{background:rgba(255,255,255,0.2);border:1px s
 <div id="shatter-overlay"></div>
 
 <!-- PWA INSTALL BANNER -->
-<div id="pwa-banner">
+<div id="pwa-banner" dir="ltr">
   <button class="pwa-close" onclick="pwaDismiss()" aria-label="close">✕</button>
   <div class="pwa-ic">📲</div>
   <div class="pwa-mid">
@@ -2842,14 +2842,8 @@ function pwaShowIfEligible() {
   const desc = document.getElementById('pwa-desc');
 
   if (inTelegram) {
-    // Внутри Telegram — используем нативный метод добавления на главный экран
-    let hasNativeAdd = false;
-    try { hasNativeAdd = typeof window.Telegram.WebApp.addToHomeScreen === 'function'; } catch(e) {}
-    if (!hasNativeAdd) return; // старая версия Telegram — баннер не покажем, есть ручная инструкция в настройках
-    pwaInTelegramMode = true;
-    if (desc) desc.textContent = 'Добавьте «أذكار» на главный экран для быстрого доступа.';
-    if (actions) actions.style.display = 'flex';
-    banner.classList.add('show');
+    // Внутри Telegram баннер не показываем — addToHomeScreen создаёт лишь
+    // ярлык на Mini App, а не полноценное приложение. Пока отключено.
     return;
   }
 
