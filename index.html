@@ -2805,7 +2805,11 @@ function changeFont(delta) {
 }
 
 // ── SERVICE WORKER (офлайн-доступ + автообновление при наличии сети) ──
-if ('serviceWorker' in navigator) {
+// В нативном Capacitor-приложении ассеты уже локальные — SW не нужен.
+function isCapacitorNative() {
+  try { return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); } catch(e) { return false; }
+}
+if ('serviceWorker' in navigator && !isCapacitorNative()) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   });
@@ -2829,9 +2833,9 @@ function pwaShowIfEligible() {
   let inTelegram = false;
   try { inTelegram = !!(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData); } catch(e) {}
 
-  // Уже установлено (standalone) — не показываем
+  // Уже установлено (standalone) или это нативное приложение — не показываем
   const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
-  if (standalone) return;
+  if (standalone || isCapacitorNative()) return;
   // Недавно закрыли — не показываем 7 дней
   try {
     const until = Number(localStorage.getItem('azkar_pwa_dismissed') || 0);
