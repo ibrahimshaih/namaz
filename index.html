@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>أذكار الصباح والمساء</title>
 <!-- PWA мета-теги для добавления на экран Домой -->
 <meta name="mobile-web-app-capable" content="yes">
@@ -89,25 +89,41 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
 /* ── DHIKR SCREEN ── */
 #dhikr-screen{background:var(--bg);}
 .dhikr-header{
-  padding:6px 22px;
+  padding:5px 18px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:0;
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:20px;
-  background:rgba(17,17,17,0.2);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:18px;
+  background:rgba(0,0,0,0.55);
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);
-  box-shadow:0 8px 32px rgba(0,0,0,0.4);
-  position:fixed;top:14px;left:50%;transform:translateX(-50%);
+  box-shadow:0 6px 20px rgba(0,0,0,0.35);
+  position:fixed;top:calc(8px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);
   z-index:900;width:max-content;max-width:62%;
 }
 body.light-theme .dhikr-header{
-  background:rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.35);
   border:1px solid rgba(0,0,0,0.08);
-  box-shadow:0 8px 32px rgba(0,0,0,0.12);
+  box-shadow:0 6px 20px rgba(0,0,0,0.12);
 }
 .btn-back-floating{
-  position:fixed;top:16px;left:16px;z-index:900;
+  position:fixed;top:calc(10px + env(safe-area-inset-top));left:16px;z-index:900;
+}
+.btn-back.btn-back-floating{
+  width:36px;height:36px;min-width:36px;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(17,17,17,0.2);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  box-shadow:0 6px 20px rgba(0,0,0,0.35);
+  color:var(--text);font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;
+  flex-shrink:0;
+}
+body.light-theme .btn-back.btn-back-floating{
+  background:rgba(255,255,255,0.35);
+  border:1px solid rgba(0,0,0,0.08);
 }
 .btn-back{
   width:38px;height:38px;min-width:38px;border-radius:50%;
@@ -554,7 +570,7 @@ body.light-theme .dhikr-text{color:rgba(26,18,9,0.95);}
 .s-row-label small{display:block;font-size:12px;color:var(--sub);margin-top:2px;}
 /* Шестерёнка на главном */
 .home-gear{
-  position:absolute;top:16px;left:16px;
+  position:absolute;top:calc(10px + env(safe-area-inset-top));left:16px;
   width:40px;height:40px;border-radius:50%;
   border:1px solid var(--sep);background:var(--bg2);
   display:flex;align-items:center;justify-content:center;
@@ -828,7 +844,7 @@ body.light-theme .ayah-player-time{color:rgba(0,0,0,0.4);}
 /* ── THEME TOGGLE BUTTON ── */
 #theme-toggle-btn{
   position:fixed;
-  top:16px;right:16px;
+  top:calc(10px + env(safe-area-inset-top));right:16px;
   z-index:2000;
   width:38px;height:38px;
   border-radius:50%;
@@ -1146,10 +1162,10 @@ body.light-theme #theme-toggle-btn{background:rgba(0,0,0,0.07);color:rgba(0,0,0,
 
 <!-- DHIKR SCREEN -->
 <div id="dhikr-screen" class="screen">
-  <div class="btn-back btn-back-floating" onclick="goHome()">‹</div>
+  <div class="btn-back btn-back-floating" onclick="goHome()">›</div>
   <div class="dhikr-header" style="direction:ltr;">
-    <span id="dhikr-subtitle" style="font-size:14px;font-style:italic;color:rgba(255,255,255,0.4);font-family:Georgia,serif;font-weight:400;">Утром</span>
-    <span id="page-indicator" style="font-family:Georgia,serif;font-size:19px;font-weight:700;letter-spacing:-1px;line-height:1.1;"><span class="pi-cur" style="color:rgba(100,120,160,0.9);">1</span><span class="pi-sep" style="color:rgba(255,255,255,0.2);">/</span><span class="pi-tot" style="color:rgba(160,40,40,0.9);">1</span></span>
+    <span id="dhikr-subtitle" style="font-size:15px;font-style:italic;color:rgba(255,255,255,0.5);font-family:Georgia,serif;font-weight:400;">Утром</span>
+    <span id="page-indicator" style="font-family:Georgia,serif;font-size:21px;font-weight:700;letter-spacing:-1px;line-height:1.2;"><span class="pi-cur" style="color:rgba(100,120,160,0.9);">1</span><span class="pi-sep" style="color:rgba(255,255,255,0.2);">/</span><span class="pi-tot" style="color:rgba(160,40,40,0.9);">1</span></span>
     <div id="dhikr-title" style="display:none;">أذكار الصباح</div>
   </div>
   <button style="display:none" class="reset-btn-placeholder"></button>
