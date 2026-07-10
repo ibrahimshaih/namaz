@@ -1,5 +1,9 @@
 {
-  "appId": "com.zikr.azkar",
+  "appId": "ru.ibrahimshaih.azkar",
   "appName": "Azkar",
-  "webDir": "www"
+  "webDir": "www",
+  "server": {
+    "url": "https://ibrahimshaih.github.io/namaz/",
+    "cleartext": false
+  }
 }
