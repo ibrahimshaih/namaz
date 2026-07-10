@@ -32,6 +32,26 @@
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto Naskh Arabic',serif;overflow:hidden;}
 #app{height:100%;display:flex;flex-direction:column;}
 
+/* ── PWA INSTALL BANNER (как на сайте никах) ── */
+#pwa-banner{
+  position:fixed;z-index:9998;left:12px;right:12px;bottom:16px;
+  background:var(--bg2);border:1px solid var(--sep);border-radius:16px;
+  padding:14px 14px 12px;box-shadow:0 12px 40px rgba(0,0,0,.5);
+  display:none;flex-wrap:wrap;gap:10px;align-items:flex-start;
+  font-family:'Segoe UI',system-ui,sans-serif;
+  animation:pwaIn .25s ease;
+}
+#pwa-banner.show{display:flex;}
+@keyframes pwaIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.pwa-close{position:absolute;top:8px;right:10px;background:none;border:none;color:var(--sub);font-size:18px;cursor:pointer;line-height:1;-webkit-tap-highlight-color:transparent;}
+.pwa-ic{font-size:26px;line-height:1;flex-shrink:0;}
+.pwa-mid{flex:1;min-width:0;}
+.pwa-mid b{display:block;font-size:15px;font-weight:700;margin-bottom:3px;color:var(--gold);}
+.pwa-mid p{color:var(--sub);font-size:13px;line-height:1.4;margin:0;}
+.pwa-actions{display:flex;align-items:center;gap:14px;width:100%;margin-top:2px;}
+.pwa-install{background:linear-gradient(135deg,var(--gold),#e8d888);color:#1a1206;border:none;border-radius:10px;padding:9px 18px;font-weight:700;font-size:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.pwa-later{background:none;border:none;color:var(--sub);font-size:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+
 /* ── SCREENS ── */
 .screen{display:none;flex-direction:column;height:100%;}
 .screen.active{display:flex;}
@@ -1074,6 +1094,20 @@ body.light-theme #theme-toggle-btn{background:rgba(0,0,0,0.07);color:rgba(0,0,0,
 
 <!-- SHATTER OVERLAY -->
 <div id="shatter-overlay"></div>
+
+<!-- PWA INSTALL BANNER -->
+<div id="pwa-banner">
+  <button class="pwa-close" onclick="pwaDismiss()" aria-label="close">✕</button>
+  <div class="pwa-ic">📲</div>
+  <div class="pwa-mid">
+    <b>Установите приложение</b>
+    <p id="pwa-desc">Добавьте «أذكار» на главный экран — быстрый запуск без браузера.</p>
+  </div>
+  <div class="pwa-actions" id="pwa-actions">
+    <button class="pwa-install" onclick="pwaInstall()">Установить</button>
+    <button class="pwa-later" onclick="pwaDismiss()">Не сейчас</button>
+  </div>
+</div>
 
 <!-- PAGE JUMP PANEL -->
 <div id="page-jump">
@@ -2731,6 +2765,64 @@ function changeFont(delta) {
   saveSettings();
 }
 
+// ── PWA INSTALL BANNER (как на сайте никах) ──
+let pwaDeferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  pwaDeferredPrompt = e;
+  pwaShowIfEligible();
+});
+window.addEventListener('appinstalled', () => { pwaHide(); });
+
+function pwaShowIfEligible() {
+  const banner = document.getElementById('pwa-banner');
+  if (!banner) return;
+  // Внутри Telegram Mini App — не показываем (там своя установка)
+  try { if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) return; } catch(e) {}
+  // Уже установлено (standalone) — не показываем
+  const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+  if (standalone) return;
+  // Недавно закрыли — не показываем 7 дней
+  try {
+    const until = Number(localStorage.getItem('azkar_pwa_dismissed') || 0);
+    if (until && Date.now() < until) return;
+  } catch(e) {}
+
+  const ua = window.navigator.userAgent || '';
+  const isIos = /iphone|ipad|ipod/i.test(ua);
+  const isSafari = /safari/i.test(ua) && !/crios|fxios|edgios/i.test(ua);
+  const actions = document.getElementById('pwa-actions');
+  const desc = document.getElementById('pwa-desc');
+
+  if (pwaDeferredPrompt) {
+    if (desc) desc.textContent = 'Добавьте «أذكار» на главный экран — быстрый запуск без браузера.';
+    if (actions) actions.style.display = 'flex';
+    banner.classList.add('show');
+  } else if (isIos && isSafari) {
+    if (desc) desc.textContent = 'Нажмите «Поделиться» ⬆️, затем «На экран «Домой»».';
+    if (actions) actions.style.display = 'none';
+    banner.classList.add('show');
+  }
+}
+
+async function pwaInstall() {
+  if (!pwaDeferredPrompt) return;
+  pwaDeferredPrompt.prompt();
+  try { await pwaDeferredPrompt.userChoice; } catch(e) {}
+  pwaDeferredPrompt = null;
+  pwaHide();
+}
+
+function pwaHide() {
+  const banner = document.getElementById('pwa-banner');
+  if (banner) banner.classList.remove('show');
+}
+
+function pwaDismiss() {
+  pwaHide();
+  try { localStorage.setItem('azkar_pwa_dismissed', String(Date.now() + 7 * 864e5)); } catch(e) {}
+}
+
 // Инициализация при загрузке
 window.addEventListener('DOMContentLoaded', () => {
   // PWA манифест с иконкой для Android
@@ -2746,6 +2838,7 @@ window.addEventListener('DOMContentLoaded', () => {
     lnk.rel = 'manifest'; lnk.href = URL.createObjectURL(blob);
     document.head.appendChild(lnk);
   } catch(e) {}
+  pwaShowIfEligible();
   initFloatRing();
   initSettings();
   // Telegram Mini App — инициализация + кнопка всегда видима
