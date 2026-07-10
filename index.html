@@ -147,24 +147,27 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
   cursor:pointer;padding:6px 16px;border-radius:20px;
   border:1px solid var(--sep);background:var(--bg3);
   color:var(--sub);}
-/* ── SHATTER EFFECT ── */
+/* ── SHATTER EFFECT (конфетти как в Telegram Premium) ── */
 #shatter-overlay{
   position:fixed;top:0;left:0;right:0;bottom:0;
   z-index:4000;pointer-events:none;
   display:none;
+  overflow:hidden;
 }
 #shatter-overlay.active{display:block;}
 .shard{
   position:absolute;
-  border-radius:50%;
-  animation:sandBlow var(--dur,0.9s) cubic-bezier(.15,.5,.8,1) var(--delay,0s) forwards;
+  top:-30px;
+  border-radius:2px;
+  animation:confettiFall var(--dur,3.2s) cubic-bezier(.25,.46,.45,.94) var(--delay,0s) forwards;
   opacity:1;
   transform-origin:center;
 }
-@keyframes sandBlow{
-  0%  {opacity:var(--op0,1); transform:translate(0,0) scale(1);}
-  40% {opacity:var(--op1,0.6);}
-  100%{opacity:0; transform:translate(var(--fx),calc(var(--fy) + 40px)) scale(0.2);}
+@keyframes confettiFall{
+  0%   {opacity:0; transform:translate(0,0) rotate(0deg);}
+  8%   {opacity:1;}
+  85%  {opacity:1;}
+  100% {opacity:0; transform:translate(var(--fx),var(--fy)) rotate(var(--rot));}
 }
 
 /* ── INSTALL SCREEN ── */
@@ -1615,43 +1618,41 @@ function shatterEffect(callback) {
   overlay.innerHTML = '';
   overlay.classList.add('active');
 
-  const activePage = document.querySelector('.book-page.active');
-  if (!activePage) { overlay.classList.remove('active'); callback(); return; }
+  // Праздничное конфетти на весь экран, как в Telegram Premium
+  const CONFETTI_COLORS = ['#f5c542','#ff6b81','#5ec8ff','#7ee787','#c896ff','#ff9f43','#ff5e5e','#4dd0e1','#f5c542','#ffd166'];
+  const W = window.innerWidth;
+  const H = window.innerHeight;
 
-  const rect = activePage.getBoundingClientRect();
-  const c = ACCENT_COLORS[currentAccent];
-
-  const N = 350;
+  const N = 220;
+  let maxTotal = 0;
   for (let i = 0; i < N; i++) {
-    const sx = rect.left + Math.random() * rect.width;
-    const sy = rect.top  + Math.random() * rect.height;
-    const sz = 4 + Math.random() * 6; // 4–10px
+    const sx = Math.random() * W;
+    const sw = 6 + Math.random() * 6;   // 6–12px
+    const sh = sw * (1.4 + Math.random() * 0.8); // прямоугольные кусочки
 
-    const delay = Math.random() * 0.3;
+    const delay = Math.random() * 1.4;
+    const dur   = 2.6 + Math.random() * 1.6; // 2.6–4.2s
+    maxTotal = Math.max(maxTotal, delay + dur);
 
-    // Летят во все стороны — случайный угол, случайное расстояние
-    const angle = Math.random() * Math.PI * 2;
-    const dist  = 120 + Math.random() * 260;
-    const fx = Math.cos(angle) * dist;
-    const fy = Math.sin(angle) * dist;
-    const dur = 1.5 + Math.random() * 1.0; // 1.5–2.5s
+    const fx  = (Math.random() - 0.5) * 220; // горизонтальный снос
+    const fy  = H + 80 + Math.random() * 120; // падение за нижний край
+    const rot = (Math.random() > 0.5 ? 1 : -1) * (360 + Math.random() * 720);
 
-    const grain = document.createElement('div');
-    grain.className = 'shard';
-    const hue = Math.random() > 0.45 ? c.main : '#c8a96e';
-    grain.style.cssText =
-      `left:${sx}px;top:${sy}px;width:${sz}px;height:${sz}px;` +
-      `background:${hue};box-shadow:0 0 ${sz*1.5}px ${hue}99;` +
-      `--fx:${fx}px;--fy:${fy}px;--dur:${dur}s;--delay:${delay}s;` +
-      `--op0:${0.8 + Math.random()*0.2};--op1:${0.4 + Math.random()*0.3};`;
-    overlay.appendChild(grain);
+    const piece = document.createElement('div');
+    piece.className = 'shard';
+    const color = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+    piece.style.cssText =
+      `left:${sx}px;width:${sw}px;height:${sh}px;` +
+      `background:${color};box-shadow:0 0 6px ${color}66;` +
+      `--fx:${fx}px;--fy:${fy}px;--rot:${rot}deg;--dur:${dur}s;--delay:${delay}s;`;
+    overlay.appendChild(piece);
   }
 
   setTimeout(() => {
     overlay.classList.remove('active');
     overlay.innerHTML = '';
     callback();
-  }, 1600);
+  }, (maxTotal + 0.3) * 1000);
 }
 
 function showScreen(id) {
