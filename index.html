@@ -1534,6 +1534,7 @@ const SUJUD = [
 // ══════════════════════════════════════════
 let currentType = 'morning';
 let counters = {};
+let celebrationShown = false;
 
 // ── ЗАПОМИНАНИЕ СТРАНИЦЫ (sessionStorage — живёт пока вкладка открыта) ──
 function saveLastPage() {
@@ -1547,6 +1548,7 @@ function openDhikr(type) {
   currentType = type;
   const data = type === 'morning' ? MORNING : type === 'evening' ? EVENING : type === 'iftar' ? IFTAR : SUJUD;
   counters = {};
+  celebrationShown = false;
   data.forEach(d => { counters[d.id] = 0; });
   document.getElementById('dhikr-title').textContent =
     type === 'morning' ? 'أذكار الصباح' : type === 'evening' ? 'أذكار المساء' : type === 'iftar' ? 'الإفطار' : 'سجود التلاوة';
@@ -2022,6 +2024,7 @@ function tapCounter(id, total) {
 
   if (next >= total) {
     markCardDone(id);
+    vibrateLongDone(total);
     // Через 300мс показываем галочку, потом ещё через 300мс переходим
     setTimeout(() => updateFloatRing(true), 300);
     setTimeout(() => activateNext(id), 600);
@@ -2029,6 +2032,13 @@ function tapCounter(id, total) {
 
   updateProgressHeader();
   checkAllDone();
+}
+
+// Дополнительная вибрация при завершении длинного зикра (10 и более повторов)
+function vibrateLongDone(total) {
+  if (!vibrationOn || !navigator.vibrate) return;
+  if (total >= 100) navigator.vibrate([50, 60, 50, 60, 50, 60, 50, 60, 50]); // 5 импульсов
+  else if (total >= 10) navigator.vibrate([50, 60, 50, 60, 50]); // 3 импульса
 }
 
 function tapSingle(id) {
@@ -2073,7 +2083,15 @@ function updateProgressHeader() {
 }
 
 function checkAllDone() {
-  // Завершение обрабатывается в activateNext
+  // Срабатывает независимо от порядка прохождения зикров —
+  // если в моменте выполнения оказались завершены все, показываем салют один раз
+  if (celebrationShown) return;
+  const data = currentType === 'morning' ? MORNING : currentType === 'evening' ? EVENING : currentType === 'iftar' ? IFTAR : SUJUD;
+  const allDone = data.every(d => (counters[d.id] || 0) >= d.repeat);
+  if (allDone) {
+    celebrationShown = true;
+    setTimeout(() => shatterEffect(() => {}), 700);
+  }
 }
 
 // ══════════════════════════════════════════
@@ -2251,28 +2269,23 @@ function activateNext(doneId) {
     }
   } else {
     hideFloatRing();
+    // Салют показывается через checkAllDone() независимо от порядка прохождения.
+    // Здесь просто переходим к первому незавершённому зикру, если он остался.
     const data = currentType === 'morning' ? MORNING : currentType === 'evening' ? EVENING : currentType === 'iftar' ? IFTAR : SUJUD;
-    const allDone = data.every(d => (counters[d.id] || 0) >= d.repeat);
-    if (allDone) {
-      // Все зикры завершены — пузырьки
-      setTimeout(() => shatterEffect(() => {}), 200);
-    } else {
-      // Есть незавершённые — найти первый и перейти к нему
-      const unfinishedIdx = data.findIndex(d => (counters[d.id] || 0) < d.repeat);
-      if (unfinishedIdx !== -1 && unfinishedIdx !== currentPage) {
-        setTimeout(() => {
-          const oldEl = document.getElementById(`page-${currentPage}`);
-          const newEl = document.getElementById(`page-${unfinishedIdx}`);
-          if (oldEl && newEl) {
-            animatePage(oldEl, newEl, unfinishedIdx > currentPage ? 1 : -1);
-            currentPage = unfinishedIdx;
-            if (newEl) newEl.scrollTop = 0;
-            updatePageNav();
-            syncRingToPage();
-            saveLastPage();
-          }
-        }, 400);
-      }
+    const unfinishedIdx = data.findIndex(d => (counters[d.id] || 0) < d.repeat);
+    if (unfinishedIdx !== -1 && unfinishedIdx !== currentPage) {
+      setTimeout(() => {
+        const oldEl = document.getElementById(`page-${currentPage}`);
+        const newEl = document.getElementById(`page-${unfinishedIdx}`);
+        if (oldEl && newEl) {
+          animatePage(oldEl, newEl, unfinishedIdx > currentPage ? 1 : -1);
+          currentPage = unfinishedIdx;
+          if (newEl) newEl.scrollTop = 0;
+          updatePageNav();
+          syncRingToPage();
+          saveLastPage();
+        }
+      }, 400);
     }
   }
 }
