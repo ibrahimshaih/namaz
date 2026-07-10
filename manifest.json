@@ -1,6 +1,6 @@
 {
-  "name": "أذكار الصباح والمساء",
-  "short_name": "أذكار",
+  "name": "Azkar",
+  "short_name": "Azkar",
   "description": "Утренние и вечерние зикры — أذكار الصباح والمساء",
   "start_url": "./index.html",
   "scope": "./",
