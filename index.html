@@ -89,20 +89,25 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
 /* ── DHIKR SCREEN ── */
 #dhikr-screen{background:var(--bg);}
 .dhikr-header{
-  padding:8px 14px;
-  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 22px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:0;
   border:1px solid rgba(255,255,255,0.08);
-  border-radius:28px;
+  border-radius:20px;
   background:rgba(17,17,17,0.2);
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);
   box-shadow:0 8px 32px rgba(0,0,0,0.4);
-  position:fixed;top:14px;left:20px;right:20px;z-index:900;
+  position:fixed;top:14px;left:50%;transform:translateX(-50%);
+  z-index:900;width:max-content;max-width:62%;
 }
 body.light-theme .dhikr-header{
   background:rgba(255,255,255,0.2);
   border:1px solid rgba(0,0,0,0.08);
   box-shadow:0 8px 32px rgba(0,0,0,0.12);
+}
+.btn-back-floating{
+  position:fixed;top:16px;left:16px;z-index:900;
 }
 .btn-back{
   width:38px;height:38px;min-width:38px;border-radius:50%;
@@ -1141,12 +1146,10 @@ body.light-theme #theme-toggle-btn{background:rgba(0,0,0,0.07);color:rgba(0,0,0,
 
 <!-- DHIKR SCREEN -->
 <div id="dhikr-screen" class="screen">
+  <div class="btn-back btn-back-floating" onclick="goHome()">‹</div>
   <div class="dhikr-header" style="direction:ltr;">
-    <div class="btn-back" onclick="goHome()">‹</div>
-    <div style="position:absolute;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:0;pointer-events:none;">
-      <span id="dhikr-subtitle" style="font-size:16px;font-style:italic;color:rgba(255,255,255,0.4);font-family:Georgia,serif;font-weight:400;">Утром</span>
-      <span id="page-indicator" style="font-family:Georgia,serif;font-size:22px;font-weight:700;letter-spacing:-1px;line-height:1.1;"><span class="pi-cur" style="color:rgba(100,120,160,0.9);">1</span><span class="pi-sep" style="color:rgba(255,255,255,0.2);">/</span><span class="pi-tot" style="color:rgba(160,40,40,0.9);">1</span></span>
-    </div>
+    <span id="dhikr-subtitle" style="font-size:14px;font-style:italic;color:rgba(255,255,255,0.4);font-family:Georgia,serif;font-weight:400;">Утром</span>
+    <span id="page-indicator" style="font-family:Georgia,serif;font-size:19px;font-weight:700;letter-spacing:-1px;line-height:1.1;"><span class="pi-cur" style="color:rgba(100,120,160,0.9);">1</span><span class="pi-sep" style="color:rgba(255,255,255,0.2);">/</span><span class="pi-tot" style="color:rgba(160,40,40,0.9);">1</span></span>
     <div id="dhikr-title" style="display:none;">أذكار الصباح</div>
   </div>
   <button style="display:none" class="reset-btn-placeholder"></button>
