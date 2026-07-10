@@ -1698,6 +1698,10 @@ function showScreen(id) {
 let currentPage = 0;
 let totalPages = 0;
 let swipeStartX = 0, swipeStartY = 0;
+// Общий лок: пока одна анимация перелистывания идёт (свайп, кнопка или автопереход
+// после завершения зикра), любая другая попытка переключить страницу игнорируется —
+// иначе старая страница остаётся зависшей поверх новой (наложение текста).
+let pageTransitionLock = false;
 
 function renderList(data) {
   const list = document.getElementById('dhikr-list');
@@ -1812,9 +1816,11 @@ function renderList(data) {
 }
 
 function animatePage(oldEl, newEl, dir) {
+  if (pageTransitionLock) return;
   const fromX = dir > 0 ? 60 : -60;
   const toX   = dir > 0 ? -60 : 60;
 
+  pageTransitionLock = true;
   oldEl.style.pointerEvents = 'none';
   oldEl.style.zIndex = '1';
 
@@ -1851,12 +1857,14 @@ function animatePage(oldEl, newEl, dir) {
         cleanupPages();
         // Сброс скролла после завершения анимации — гарантированно работает
         requestAnimationFrame(() => { newEl.scrollTop = 0; });
+        pageTransitionLock = false;
       }, 300);
     });
   });
 }
 
 function goPage(dir) {
+  if (pageTransitionLock) return;
   const data = currentType === 'morning' ? MORNING : currentType === 'evening' ? EVENING : currentType === 'iftar' ? IFTAR : SUJUD;
   const newPage = currentPage + dir;
   if (newPage < 0 || newPage >= totalPages) return;
@@ -1947,7 +1955,7 @@ function initSwipe(el) {
   }
 
   function onTouchStart(e) {
-    if (animating) return;
+    if (animating || pageTransitionLock) return;
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
     dragging = true; isHoriz = null;
@@ -1986,6 +1994,7 @@ function initSwipe(el) {
     }
     isHoriz = null;
     animating = true;
+    pageTransitionLock = true;
     const dx = e.changedTouches[0].clientX - startX;
     const w  = W();
     const ease = 'transform 0.28s cubic-bezier(.25,.46,.45,.94)';
@@ -1997,7 +2006,7 @@ function initSwipe(el) {
       setTimeout(() => {
         showPage(nextEl);
         hidePage(curEl);
-        currentPage += 1; animating = false;
+        currentPage += 1; animating = false; pageTransitionLock = false;
         updatePageNav(); syncRingToPage(); saveLastPage();
         cleanupPages();
         requestAnimationFrame(() => { if (nextEl) nextEl.scrollTop = 0; });
@@ -2010,7 +2019,7 @@ function initSwipe(el) {
       setTimeout(() => {
         showPage(prevEl);
         hidePage(curEl);
-        currentPage -= 1; animating = false;
+        currentPage -= 1; animating = false; pageTransitionLock = false;
         updatePageNav(); syncRingToPage(); saveLastPage();
         cleanupPages();
         requestAnimationFrame(() => { if (prevEl) prevEl.scrollTop = 0; });
@@ -2023,7 +2032,7 @@ function initSwipe(el) {
       setTimeout(() => {
         curEl.style.transition = '';
         hidePage(nextEl); hidePage(prevEl);
-        animating = false;
+        animating = false; pageTransitionLock = false;
       }, 290);
     }
   }
