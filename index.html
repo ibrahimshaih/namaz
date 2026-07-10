@@ -89,12 +89,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
 /* ── DHIKR SCREEN ── */
 #dhikr-screen{background:var(--bg);}
 .dhikr-header{
-  padding:5px 18px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:7px 20px;
+  display:flex;flex-direction:row;align-items:baseline;justify-content:center;
   gap:0;
   border:1px solid rgba(255,255,255,0.06);
-  border-radius:18px;
-  background:rgba(0,0,0,0.55);
+  border-radius:999px;
+  background:rgba(17,17,17,0.2);
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);
   box-shadow:0 6px 20px rgba(0,0,0,0.35);
@@ -102,7 +102,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
   z-index:900;width:max-content;max-width:62%;
 }
 body.light-theme .dhikr-header{
-  background:rgba(255,255,255,0.35);
+  background:rgba(255,255,255,0.2);
   border:1px solid rgba(0,0,0,0.08);
   box-shadow:0 6px 20px rgba(0,0,0,0.12);
 }
@@ -1164,8 +1164,8 @@ body.light-theme #theme-toggle-btn{background:rgba(0,0,0,0.07);color:rgba(0,0,0,
 <div id="dhikr-screen" class="screen">
   <div class="btn-back btn-back-floating" onclick="goHome()">›</div>
   <div class="dhikr-header" style="direction:ltr;">
-    <span id="dhikr-subtitle" style="font-size:15px;font-style:italic;color:rgba(255,255,255,0.5);font-family:Georgia,serif;font-weight:400;">Утром</span>
-    <span id="page-indicator" style="font-family:Georgia,serif;font-size:21px;font-weight:700;letter-spacing:-1px;line-height:1.2;"><span class="pi-cur" style="color:rgba(100,120,160,0.9);">1</span><span class="pi-sep" style="color:rgba(255,255,255,0.2);">/</span><span class="pi-tot" style="color:rgba(160,40,40,0.9);">1</span></span>
+    <span id="dhikr-subtitle" style="font-size:13px;font-style:italic;color:rgba(255,255,255,0.5);font-family:Georgia,serif;font-weight:400;">Утром</span>
+    <span id="page-indicator" style="font-family:Georgia,serif;font-size:15px;font-weight:700;letter-spacing:-1px;line-height:1;margin-left:6px;"><span class="pi-cur" style="color:rgba(100,120,160,0.9);">1</span><span class="pi-sep" style="color:rgba(255,255,255,0.2);">/</span><span class="pi-tot" style="color:rgba(160,40,40,0.9);">1</span></span>
     <div id="dhikr-title" style="display:none;">أذكار الصباح</div>
   </div>
   <button style="display:none" class="reset-btn-placeholder"></button>
