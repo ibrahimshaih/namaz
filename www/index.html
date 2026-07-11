@@ -2110,9 +2110,9 @@ function tapCounter(id, total) {
 
 // Дополнительная вибрация при завершении длинного зикра (10 и более повторов)
 function vibrateLongDone(total) {
-  if (!vibrationOn || !navigator.vibrate) return;
-  if (total >= 100) navigator.vibrate([50, 60, 50, 60, 50, 60, 50, 60, 50]); // 5 импульсов
-  else if (total >= 10) navigator.vibrate([50, 60, 50, 60, 50]); // 3 импульса
+  if (!vibrationOn) return;
+  if (total >= 100) doVibrate([50, 60, 50, 60, 50, 60, 50, 60, 50]); // 5 импульсов
+  else if (total >= 10) doVibrate([50, 60, 50, 60, 50]); // 3 импульса
 }
 
 function tapSingle(id) {
@@ -2486,12 +2486,38 @@ function toggleVibration() {
   vibrationOn = !vibrationOn;
   document.getElementById('vibro-toggle').classList.toggle('on', vibrationOn);
   // Тестовая вибрация при включении — подтверждение что работает
-  if (vibrationOn && navigator.vibrate) navigator.vibrate([40, 60, 40]);
+  if (vibrationOn) doVibrate([40, 60, 40]);
   saveSettings();
 }
 
+// Единая вибрация: в нативном Capacitor-приложении обычный WebView не умеет
+// navigator.vibrate() надёжно (известное ограничение Android WebView, в отличие
+// от Chrome/TWA) — используем нативный плагин Haptics вместо Web Vibration API.
+function doVibrate(pattern) {
+  if (!vibrationOn) return;
+  if (isCapacitorNative()) {
+    try {
+      const Haptics = window.Capacitor.Plugins.Haptics;
+      if (!Haptics) return;
+      if (Array.isArray(pattern)) {
+        let delay = 0;
+        pattern.forEach((ms, i) => {
+          if (i % 2 === 0) {
+            setTimeout(() => Haptics.vibrate({ duration: ms }), delay);
+          }
+          delay += ms;
+        });
+      } else {
+        Haptics.vibrate({ duration: pattern });
+      }
+    } catch(e) {}
+    return;
+  }
+  if (navigator.vibrate) navigator.vibrate(pattern);
+}
+
 function vibrate(ms = 18) {
-  if (vibrationOn && navigator.vibrate) navigator.vibrate(ms);
+  doVibrate(ms);
 }
 
 // ── TRANS FONT SIZE ──

@@ -20,7 +20,8 @@
   "homepage": "https://github.com/ibrahimshaih/namaz#readme",
   "dependencies": {
     "@capacitor/android": "^8.4.1",
-    "@capacitor/core": "^8.4.1"
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/haptics": "^8.0.2"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
