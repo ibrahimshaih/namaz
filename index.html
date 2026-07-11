@@ -540,13 +540,13 @@ body.light-theme .dhikr-text{color:rgba(26,18,9,0.95);}
 /* ── SETTINGS SCREEN ── */
 #settings{background:var(--bg);justify-content:flex-start;}
 .settings-header{
-  padding:14px 16px 12px;
+  padding:calc(24px + env(safe-area-inset-top)) 16px 12px;
   display:flex;align-items:center;gap:12px;
   border-bottom:1px solid var(--sep);
   flex-shrink:0;
   direction:ltr;
 }
-.settings-title{font-size:20px;font-weight:700;color:var(--gold);flex:1;text-align:center;direction:rtl;font-family:Georgia,serif;font-style:italic;}
+.settings-title{font-size:20px;font-weight:700;color:var(--gold);flex:1;text-align:center;direction:ltr;font-family:Georgia,serif;font-style:italic;}
 .settings-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 14px 40px;scrollbar-width:none;-ms-overflow-style:none;}
 .settings-body::-webkit-scrollbar{display:none;}
 .settings-body::-webkit-scrollbar{display:none;}
@@ -868,20 +868,20 @@ body.light-theme #theme-toggle-btn{background:rgba(255,255,255,0.2);border:1px s
   <div class="home-title">أذكار</div>
   <div class="home-subtitle">Азкар</div>
   <div class="home-cards">
-    <div class="home-card card-morning">
-      <div class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4"/><path d="M5.5 7.5l1.8 1.8"/><path d="M18.5 7.5l-1.8 1.8"/><path d="M3 15h2"/><path d="M19 15h2"/><path d="M6 15a6 6 0 0 1 12 0"/><path d="M4 19h16"/></svg></div>
-      <div class="home-card-label" data-i18n="card_morning">Утренние азкары</div>
-    </div>
     <div class="home-card card-evening">
       <div class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg></div>
       <div class="home-card-label" data-i18n="card_evening">Вечерние азкары</div>
     </div>
+    <div class="home-card card-morning">
+      <div class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4"/><path d="M5.5 7.5l1.8 1.8"/><path d="M18.5 7.5l-1.8 1.8"/><path d="M3 15h2"/><path d="M19 15h2"/><path d="M6 15a6 6 0 0 1 12 0"/><path d="M4 19h16"/></svg></div>
+      <div class="home-card-label" data-i18n="card_morning">Утренние азкары</div>
+    </div>
     <div class="home-card card-iftar">
-      <div class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v7a2 2 0 0 0 4 0V3"/><path d="M9 10v11"/><path d="M17 3c-1.6 0-2.5 1.6-2.5 4s.9 4 2.5 4v10"/></svg></div>
+      <div class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></div>
       <div class="home-card-label" data-i18n="card_iftar">Ифтар</div>
     </div>
     <div class="home-card card-sujud">
-      <div class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V11l7-6 7 6v10"/><path d="M9 21v-6h6v6"/><path d="M12 5V3"/><path d="M10.5 3.5h3"/></svg></div>
+      <div class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/><path d="M12 3v2.4M12 18.6V21M21 12h-2.4M5.4 12H3M18.36 5.64l-1.7 1.7M7.34 16.66l-1.7 1.7M18.36 18.36l-1.7-1.7M7.34 7.34l-1.7-1.7"/></svg></div>
       <div class="home-card-label" data-i18n="card_sujud">Суджуд Тиляуа</div>
     </div>
   </div>
@@ -891,7 +891,7 @@ body.light-theme #theme-toggle-btn{background:rgba(255,255,255,0.2);border:1px s
 <div id="settings" class="screen">
   <div class="settings-header">
     <div class="btn-back" onclick="goHome()">‹</div>
-    <div class="settings-title">الإعدادات &nbsp; Настройки</div>
+    <div class="settings-title">Настройки</div>
     <div style="width:38px"></div>
   </div>
   <div class="settings-body">
