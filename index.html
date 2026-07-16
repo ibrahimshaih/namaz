@@ -35,7 +35,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
 
 /* ── PWA INSTALL BANNER (как на сайте никах) ── */
 #pwa-banner{
-  position:fixed;z-index:9998;left:12px;right:12px;bottom:16px;
+  position:fixed;z-index:9998;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));
   background:var(--bg2);border:1px solid var(--sep);border-radius:16px;
   padding:14px 14px 12px;box-shadow:0 12px 40px rgba(0,0,0,.5);
   display:none;flex-wrap:wrap;gap:10px;align-items:flex-start;
@@ -389,7 +389,7 @@ body.light-theme .btn-back.btn-back-floating{
 /* ── FLOATING RING ── */
 #float-ring{
   position:fixed;
-  bottom:90px;left:20px;
+  bottom:calc(90px + env(safe-area-inset-bottom));left:20px;
   width:170px;height:170px;
   z-index:1500;
   display:none;
@@ -761,7 +761,7 @@ body.light-theme .dhikr-intro{
 .ayah-player{
   display:none;
   position:fixed;
-  bottom:14px;left:16px;right:16px;
+  bottom:calc(14px + env(safe-area-inset-bottom));left:16px;right:16px;
   z-index:800;
   align-items:center;gap:14px;
   padding:8px 14px;
