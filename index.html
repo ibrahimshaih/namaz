@@ -2314,6 +2314,10 @@ function findNextActive() {
 }
 
 function activateNext(doneId) {
+  // Автопереход идёт с задержкой (setTimeout) и может сработать, пока пользователь
+  // уже сам полистал кнопками/свайпом — без этой проверки currentPage и DOM
+  // рассинхронизируются, и две страницы остаются наложены друг на друга.
+  if (pageTransitionLock) return;
   const nextIdx = currentPage + 1;
   if (nextIdx < totalPages) {
     const oldEl = document.getElementById(`page-${currentPage}`);
@@ -2334,6 +2338,7 @@ function activateNext(doneId) {
     const unfinishedIdx = data.findIndex(d => (counters[d.id] || 0) < d.repeat);
     if (unfinishedIdx !== -1 && unfinishedIdx !== currentPage) {
       setTimeout(() => {
+        if (pageTransitionLock) return;
         const oldEl = document.getElementById(`page-${currentPage}`);
         const newEl = document.getElementById(`page-${unfinishedIdx}`);
         if (oldEl && newEl) {
@@ -2378,6 +2383,7 @@ function closePageJump() {
 
 function jumpToPage(idx) {
   if (idx === currentPage) return;
+  if (pageTransitionLock) return;
   const data = currentType === 'morning' ? MORNING : currentType === 'evening' ? EVENING : currentType === 'iftar' ? IFTAR : SUJUD;
   const oldEl = document.getElementById(`page-${currentPage}`);
   const newEl = document.getElementById(`page-${idx}`);
