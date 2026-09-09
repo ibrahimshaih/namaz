@@ -2084,9 +2084,14 @@ function tapCounter(id, total) {
   if (next >= total) {
     markCardDone(id);
     vibrateLongDone(total);
-    // Через 300мс показываем галочку, потом ещё через 300мс переходим
+    // Через 300мс показываем галочку, потом ещё через 300мс переходим.
+    // Страницу фиксируем СЕЙЧАС, а не в момент срабатывания таймера: если
+    // пользователь за эти 600мс сам свайпнёт вперёд, currentPage к моменту
+    // срабатывания будет уже другим — без фиксации activateNext толкнул бы
+    // ЕГО новую страницу дальше без запроса, и получалось наложение (найдено 09.09).
     setTimeout(() => updateFloatRing(true), 300);
-    setTimeout(() => activateNext(id), 600);
+    const _fromPage = currentPage;
+    setTimeout(() => activateNext(id, _fromPage), 600);
   }
 
   updateProgressHeader();
@@ -2111,9 +2116,11 @@ function tapSingle(id) {
   floatCurrentId = id;
   floatCurrentTotal = 1;
   updateFloatRing(false);
-  // Через 500мс галочка, потом переход
+  // Через 500мс галочка, потом переход. Страницу фиксируем сейчас — см.
+  // комментарий в tapCounter (тот же баг наложения страниц, найдено 09.09).
   setTimeout(() => updateFloatRing(true), 300);
-  setTimeout(() => activateNext(id), 600);
+  const _fromPage = currentPage;
+  setTimeout(() => activateNext(id, _fromPage), 600);
   updateProgressHeader();
   checkAllDone();
 }
@@ -2313,11 +2320,15 @@ function findNextActive() {
   return next || null;
 }
 
-function activateNext(doneId) {
+function activateNext(doneId, fromPage) {
   // Автопереход идёт с задержкой (setTimeout) и может сработать, пока пользователь
   // уже сам полистал кнопками/свайпом — без этой проверки currentPage и DOM
   // рассинхронизируются, и две страницы остаются наложены друг на друга.
   if (pageTransitionLock) return;
+  // fromPage — страница на момент завершения зикра (см. tapCounter/tapSingle).
+  // Если пользователь уже сам ушёл на другую страницу за время задержки —
+  // автопереход не про его текущий экран, пропускаем (09.09, тот же баг наложения).
+  if (fromPage !== undefined && fromPage !== currentPage) return;
   const nextIdx = currentPage + 1;
   if (nextIdx < totalPages) {
     const oldEl = document.getElementById(`page-${currentPage}`);
