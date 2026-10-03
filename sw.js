@@ -1,7 +1,7 @@
 // Service Worker для аздкар-приложения
 // Стратегия: network-first — если есть интернет, всегда берём свежую версию
 // и обновляем кэш; если сети нет — отдаём последнюю закэшированную копию.
-const CACHE_NAME = 'azkar-cache-v1';
+const CACHE_NAME = 'azkar-cache-v2';
 const CORE_ASSETS = ['./', './index.html'];
 
 self.addEventListener('install', (event) => {
