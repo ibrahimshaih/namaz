@@ -1926,20 +1926,18 @@ function updatePageNav() {
 }
 
 function cleanupPages() {
+  // Единственный источник правды — currentPage: активна ровно одна страница.
+  // Раньше активность определялась по классу, и touchend, пришедший посреди
+  // автоперехода, снимал .active с новой страницы (пустой экран до следующего тапа).
+  const activeId = 'page-' + currentPage;
   document.querySelectorAll('.book-page').forEach(p => {
-    if (p.classList.contains('active')) {
-      p.style.transition    = '';
-      p.style.transform     = 'translateX(0)';
-      p.style.opacity       = '';
-      p.style.zIndex        = '';
-      p.style.pointerEvents = '';
-    } else {
-      p.style.transition    = '';
-      p.style.transform     = '';
-      p.style.opacity       = '';
-      p.style.zIndex        = '';
-      p.style.pointerEvents = '';
-    }
+    const isCur = p.id === activeId;
+    p.classList.toggle('active', isCur);
+    p.style.transition    = '';
+    p.style.transform     = isCur ? 'translateX(0)' : '';
+    p.style.opacity       = '';
+    p.style.zIndex        = '';
+    p.style.pointerEvents = '';
   });
 }
 
@@ -2002,6 +2000,9 @@ function initSwipe(el) {
   function onTouchEnd(e) {
     if (!dragging) return;
     dragging = false;
+    // Автопереход/другая анимация стартовала, пока палец был на экране:
+    // не трогаем страницы (иначе спрячем только что показанную), просто нормализуем.
+    if (pageTransitionLock) { isHoriz = null; setTimeout(cleanupPages, 320); return; }
     if (!isHoriz) {
       if (curEl)  { curEl.style.transition = ''; curEl.style.transform = ''; }
       hidePage(nextEl); hidePage(prevEl);
