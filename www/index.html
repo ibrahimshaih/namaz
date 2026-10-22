@@ -213,6 +213,8 @@ body.light-theme .btn-back.btn-back-floating{
   -webkit-tap-highlight-color:transparent;
 }
 .dhikr-card.done .dhikr-text{opacity:0.55;}
+/* Карточка зикра никогда не подсвечивается: ни рамки, ни свечения, ни обводки */
+.dhikr-card,.dhikr-card.done,.book-page{border:none !important;box-shadow:none !important;outline:none !important;}
 
 /* ── NAV BAR (перелистывание) ── */
 .book-nav{
@@ -2249,14 +2251,8 @@ function tapSingle(id) {
 function markCardDone(id) {
   const card = document.getElementById(`card-${id}`);
   if (card) {
+    // Завершённый зикр только приглушается (CSS .done) — без рамки и свечения
     card.classList.add('done');
-    const c = ACCENT_COLORS[currentAccent];
-    if (c) {
-      card.style.borderColor = c.main;
-
-      card.style.boxShadow = `0 0 10px ${c.glow}, inset 0 0 0 1px ${c.border}`;
-      card.style.background = '';
-    }
   }
 }
 
@@ -2748,12 +2744,6 @@ function applyAccent(name) {
 
 
 
-  // Завершённые карточки — только рамка
-  document.querySelectorAll('.dhikr-card.done').forEach(card => {
-    card.style.borderColor = c.main;
-    card.style.boxShadow = `0 0 10px ${c.glow}, inset 0 0 0 1px ${c.border}`;
-    card.style.background = '';
-  });
 
 
 
