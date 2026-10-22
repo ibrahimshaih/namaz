@@ -93,8 +93,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
 .home-card--wide{grid-column:span 2;min-height:108px;justify-content:center;padding:16px 18px;}
 .home-card-art{position:absolute;inset:0;z-index:-1;width:100%;height:100%;display:block;}
 .home-card--tall::after{
-  content:"";position:absolute;inset:auto 0 0 0;height:55%;z-index:-1;
-  background:linear-gradient(to top,rgba(5,6,18,.82),rgba(5,6,18,0));
+  content:"";position:absolute;inset:auto 0 0 0;height:40%;z-index:-1;
+  background:linear-gradient(to top,rgba(5,6,18,.78),rgba(5,6,18,0));
 }
 .home-card-ar{font-family:'Noto Naskh Arabic',serif;font-size:16px;line-height:1.3;color:rgba(255,255,255,.72);direction:rtl;}
 .home-card-label{
@@ -901,47 +901,43 @@ body.light-theme #theme-toggle-btn{background:rgba(255,255,255,0.2);border:1px s
   <div class="home-subtitle">Азкар</div>
   <div class="home-cards">
 
-    <!-- Утро: рассвет над мечетью -->
+    <!-- Утро: после Фаджра до восхода — солнце ещё не взошло, свет у горизонта -->
     <div class="home-card home-card--tall card-morning" data-period="morning">
       <svg class="home-card-art" viewBox="0 0 120 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <defs>
           <linearGradient id="hc-dawn" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#1c2452"/><stop offset=".45" stop-color="#5b3f86"/><stop offset=".75" stop-color="#d9775a"/><stop offset="1" stop-color="#f4b462"/>
+            <stop offset="0" stop-color="#121a44"/><stop offset=".34" stop-color="#3a3a7e"/><stop offset=".54" stop-color="#b06f88"/><stop offset=".74" stop-color="#f2a878"/><stop offset="1" stop-color="#f8c890"/>
           </linearGradient>
-          <radialGradient id="hc-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff1c9"/><stop offset=".45" stop-color="#ffcf72" stop-opacity=".9"/><stop offset="1" stop-color="#ffb35c" stop-opacity="0"/></radialGradient>
+          <radialGradient id="hc-glow" cx=".5" cy="1" r=".75"><stop offset="0" stop-color="#ffd59a" stop-opacity=".85"/><stop offset=".5" stop-color="#f3a07a" stop-opacity=".3"/><stop offset="1" stop-color="#f3a07a" stop-opacity="0"/></radialGradient>
         </defs>
         <rect width="120" height="160" fill="url(#hc-dawn)"/>
-        <circle cx="62" cy="112" r="40" fill="url(#hc-sun)"/>
-        <circle cx="62" cy="112" r="13" fill="#fff4d6"/>
-        <path d="M0 116 C 30 108 50 112 70 106 S 105 104 120 110 V160 H0Z" fill="#2a1f45" opacity=".55"/>
-        <path d="M0 122h22v-10a10 10 0 0 1 20 0v10h6V92l2-6 2 6v30h10v-8a14 14 0 0 1 28 0v8h30v38H0Z" fill="#160f2b"/>
+        <ellipse cx="62" cy="112" rx="84" ry="56" fill="url(#hc-glow)"/>
+        <circle class="tw" cx="18" cy="20" r="1.2" fill="#fff"/>
+        <circle class="tw" cx="46" cy="38" r=".9" fill="#fff"/>
+        <circle class="tw" cx="96" cy="14" r="1.1" fill="#fff"/>
+        <circle class="tw" cx="78" cy="48" r=".8" fill="#fff"/>
+        <path d="M0 122h22v-10a10 10 0 0 1 20 0v10h6V92l2-6 2 6v30h10v-8a14 14 0 0 1 28 0v8h30v38H0Z" fill="#140f2a" transform="translate(0 10)"/>
       </svg>
       <span class="home-card-now"><i></i><span data-i18n="card_now">Сейчас время</span></span>
       <span class="home-card-ar">أذكار الصباح</span>
       <span class="home-card-label" data-i18n="card_morning">Утренние азкары</span>
     </div>
 
-    <!-- Вечер: ночь, полумесяц и звёзды -->
+    <!-- Вечер: после Асра до заката — солнце низко над горизонтом -->
     <div class="home-card home-card--tall card-evening" data-period="evening">
       <svg class="home-card-art" viewBox="0 0 120 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <defs>
-          <linearGradient id="hc-night" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#070b22"/><stop offset=".6" stop-color="#16214a"/><stop offset="1" stop-color="#2b3a6e"/>
+          <linearGradient id="hc-dusk" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2a2c5c"/><stop offset=".45" stop-color="#8c4b5e"/><stop offset=".78" stop-color="#e08a4f"/><stop offset="1" stop-color="#f6c26b"/>
           </linearGradient>
-          <radialGradient id="hc-moonglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f5c542" stop-opacity=".35"/><stop offset="1" stop-color="#f5c542" stop-opacity="0"/></radialGradient>
+          <radialGradient id="hc-lowsun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff0c4"/><stop offset=".4" stop-color="#ffc56a" stop-opacity=".8"/><stop offset="1" stop-color="#ffb35c" stop-opacity="0"/></radialGradient>
         </defs>
-        <rect width="120" height="160" fill="url(#hc-night)"/>
-        <circle cx="78" cy="46" r="34" fill="url(#hc-moonglow)"/>
-        <path d="M86 30a17 17 0 1 0 6 28 14 14 0 1 1-6-28z" fill="#f7d77a"/>
-        <circle class="tw" cx="22" cy="24" r="1.4" fill="#fff"/>
-        <circle class="tw" cx="40" cy="52" r="1" fill="#fff"/>
-        <circle class="tw" cx="104" cy="88" r="1.2" fill="#fff"/>
-        <circle class="tw" cx="16" cy="78" r=".9" fill="#fff"/>
-        <circle class="tw" cx="56" cy="20" r="1.1" fill="#fff"/>
-        <circle class="tw" cx="108" cy="16" r="1" fill="#fff"/>
-        <circle class="tw" cx="34" cy="96" r=".8" fill="#fff"/>
-        <path d="M0 128 C 25 116 45 124 64 118 S 100 112 120 122 V160 H0Z" fill="#0b1230"/>
-        <path d="M0 140 C 30 132 60 138 82 134 S 110 132 120 136 V160 H0Z" fill="#060a1d"/>
+        <rect width="120" height="160" fill="url(#hc-dusk)"/>
+        <circle cx="38" cy="80" r="36" fill="url(#hc-lowsun)"/>
+        <circle cx="38" cy="80" r="12" fill="#fff2cf"/>
+        <path d="M0 120 C 25 110 45 118 64 112 S 100 106 120 116 V160 H0Z" fill="#4a2440" opacity=".7"/>
+        <path d="M0 132 C 30 124 60 130 82 126 S 110 124 120 128 V160 H0Z" fill="#24122a"/>
+        <path d="M92 128V100l2-6 2 6v28z" fill="#24122a"/>
       </svg>
       <span class="home-card-now"><i></i><span data-i18n="card_now">Сейчас время</span></span>
       <span class="home-card-ar">أذكار المساء</span>
@@ -957,9 +953,8 @@ body.light-theme #theme-toggle-btn{background:rgba(255,255,255,0.2);border:1px s
           </linearGradient>
         </defs>
         <rect width="300" height="108" fill="url(#hc-sunset)"/>
-        <circle cx="232" cy="92" r="26" fill="#ffd28a" opacity=".9"/>
-        <rect x="0" y="90" width="300" height="18" fill="#1a0e22"/>
-        <path d="M262 90c0-14 2-26 4-34" stroke="#1a0e22" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <circle cx="232" cy="104" r="26" fill="#ffd28a" opacity=".9"/>
+        <path d="M262 108c0-20 2-38 4-52" stroke="#1a0e22" stroke-width="3" fill="none" stroke-linecap="round"/>
         <path d="M266 56c-8-6-18-5-24 1 8-2 15 0 24-1zm0 0c4-8 13-12 21-10-8 2-14 6-21 10zm0 0c-6-1-13 3-16 9 5-5 11-7 16-9zm0 0c7 0 13 4 15 10-4-5-9-8-15-10z" fill="#1a0e22"/>
         <path d="M196 26a9 9 0 1 0 4 15 7 7 0 1 1-4-15z" fill="#ffe2a8" opacity=".85"/>
       </svg>
