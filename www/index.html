@@ -29,13 +29,21 @@
   --gold:#f5c542;
   --accent:#00ff78;
   --accent-glow:rgba(0,255,120,0.35);
+  /* Отступы сверху/снизу: в полноэкранном режиме Telegram их задаёт скрипт
+     (--tg-top = чёлка + плавающие кнопки Telegram), иначе — системные */
+  --zt:var(--tg-top, env(safe-area-inset-top, 0px));
+  --zb:var(--tg-bottom, env(safe-area-inset-bottom, 0px));
 }
+/* Полноэкранный режим: вуаль под кнопками Telegram, чтобы они читались */
+html[data-fs] body::after{content:"";position:fixed;left:0;right:0;top:0;z-index:950;pointer-events:none;
+  height:calc(var(--zt) + 6px);
+  background:linear-gradient(to bottom,var(--bg) 0%,color-mix(in srgb,var(--bg) 80%,transparent) 60%,transparent 100%);}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto Naskh Arabic',serif;overflow:hidden;}
 #app{height:100%;display:flex;flex-direction:column;}
 
 /* ── PWA INSTALL BANNER (как на сайте никах) ── */
 #pwa-banner{
-  position:fixed;z-index:9998;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));
+  position:fixed;z-index:9998;left:12px;right:12px;bottom:calc(16px + var(--zb));
   background:var(--bg2);border:1px solid var(--sep);border-radius:16px;
   padding:14px 14px 12px;box-shadow:0 12px 40px rgba(0,0,0,.5);
   display:none;flex-wrap:wrap;gap:10px;align-items:flex-start;
@@ -58,7 +66,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
 .screen.active{display:flex;}
 
 /* ── HOME (22.10.2026): карточки-сцены времени суток ── */
-#home{justify-content:flex-start;align-items:center;gap:0;padding:calc(58px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom));overflow-y:auto;}
+#home{justify-content:flex-start;align-items:center;gap:0;padding:calc(58px + var(--zt)) 18px calc(24px + var(--zb));overflow-y:auto;}
 .home-ornament{width:46px;height:46px;color:var(--gold);margin-bottom:4px;}
 .home-ornament svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linejoin:round;}
 .home-title{
@@ -124,7 +132,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto N
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);
   box-shadow:0 6px 20px rgba(0,0,0,0.35);
-  position:fixed;top:calc(10px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);
+  position:fixed;top:calc(10px + var(--zt));left:50%;transform:translateX(-50%);
   z-index:900;width:max-content;max-width:62%;
 }
 body.light-theme .dhikr-header{
@@ -133,7 +141,7 @@ body.light-theme .dhikr-header{
   box-shadow:0 6px 20px rgba(0,0,0,0.12);
 }
 .btn-back-floating{
-  position:fixed;top:calc(10px + env(safe-area-inset-top));left:16px;z-index:900;
+  position:fixed;top:calc(10px + var(--zt));left:16px;z-index:900;
 }
 .btn-back.btn-back-floating{
   width:36px;height:36px;min-width:36px;border-radius:50%;
@@ -419,7 +427,7 @@ body.light-theme .btn-back.btn-back-floating{
 /* ── FLOATING RING ── */
 #float-ring{
   position:fixed;
-  bottom:calc(90px + env(safe-area-inset-bottom));left:20px;
+  bottom:calc(90px + var(--zb));left:20px;
   width:170px;height:170px;
   z-index:1500;
   display:none;
@@ -568,7 +576,7 @@ body.light-theme .dhikr-text{color:rgba(26,18,9,0.95);}
 /* ── SETTINGS SCREEN ── */
 #settings{background:var(--bg);justify-content:flex-start;}
 .settings-title-pill{font-size:18px;font-weight:700;color:var(--gold);direction:ltr;font-family:Georgia,serif;font-style:italic;white-space:nowrap;}
-.settings-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:calc(66px + env(safe-area-inset-top)) 14px 40px;scrollbar-width:none;-ms-overflow-style:none;}
+.settings-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:calc(66px + var(--zt)) 14px 40px;scrollbar-width:none;-ms-overflow-style:none;}
 .settings-body::-webkit-scrollbar{display:none;}
 .settings-body::-webkit-scrollbar{display:none;}
 .s-section{margin-bottom:24px;}
@@ -584,7 +592,7 @@ body.light-theme .dhikr-text{color:rgba(26,18,9,0.95);}
 .s-row-label small{display:block;font-size:12px;color:var(--sub);margin-top:2px;}
 /* Шестерёнка на главном */
 .home-gear{
-  position:absolute;top:calc(10px + env(safe-area-inset-top));left:16px;
+  position:absolute;top:calc(10px + var(--zt));left:16px;
   width:40px;height:40px;border-radius:50%;
   border:1px solid var(--sep);background:var(--bg2);
   display:flex;align-items:center;justify-content:center;
@@ -790,7 +798,7 @@ body.light-theme .dhikr-intro{
 .ayah-player{
   display:none;
   position:fixed;
-  bottom:calc(14px + env(safe-area-inset-bottom));left:16px;right:16px;
+  bottom:calc(14px + var(--zb));left:16px;right:16px;
   z-index:800;
   align-items:center;gap:14px;
   padding:8px 14px;
@@ -858,7 +866,7 @@ body.light-theme .ayah-player-time{color:rgba(0,0,0,0.4);}
 /* ── THEME TOGGLE BUTTON ── */
 #theme-toggle-btn{
   position:fixed;
-  top:calc(10px + env(safe-area-inset-top));right:16px;
+  top:calc(10px + var(--zt));right:16px;
   z-index:2000;
   width:36px;height:36px;
   border-radius:50%;
@@ -3055,7 +3063,26 @@ window.addEventListener('DOMContentLoaded', () => {
   // Telegram Mini App — инициализация + кнопка всегда видима
   try {
     if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.ready();
+      const tg = window.Telegram.WebApp;
+      tg.ready();
+      tg.expand();
+      if (tg.isVersionAtLeast && tg.isVersionAtLeast('7.7')) tg.disableVerticalSwipes();
+      // Весь экран, как в приложении никаха (Bot API 8.0, только телефоны).
+      // Кнопки Telegram ложатся поверх — отступ: чёлка + высота кнопок.
+      if ((tg.platform === 'android' || tg.platform === 'ios') && tg.isVersionAtLeast && tg.isVersionAtLeast('8.0') && typeof tg.requestFullscreen === 'function') {
+        const applyInsets = () => {
+          const sa = tg.safeAreaInset || {}, csa = tg.contentSafeAreaInset || {};
+          const top = (sa.top || 0) + (csa.top || 0), bottom = (sa.bottom || 0) + (csa.bottom || 0);
+          const root = document.documentElement;
+          root.style.setProperty('--tg-top', top + 'px');
+          root.style.setProperty('--tg-bottom', bottom + 'px');
+          root.toggleAttribute('data-fs', top > 0);
+        };
+        ['fullscreenChanged', 'safeAreaChanged', 'contentSafeAreaChanged', 'fullscreenFailed'].forEach(ev => tg.onEvent(ev, applyInsets));
+        if (!tg.isFullscreen) tg.requestFullscreen();
+        applyInsets();
+        setTimeout(applyInsets, 400);
+      }
     }
   } catch(e) {}
   pwaShowIfEligible();
